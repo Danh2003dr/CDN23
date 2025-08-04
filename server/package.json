@@ -1,0 +1,53 @@
+{
+  "name": "cdn-management-server",
+  "version": "1.0.0",
+  "description": "CDN Management System Backend",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "node src/index.js",
+    "dev": "nodemon src/index.js",
+    "test": "jest",
+    "setup": "node database/setup.js",
+    "seed": "node database/seed.js",
+    "setup-fixed": "node database/setup-fixed.js"
+  },
+  "dependencies": {
+    "aws-sdk": "^2.1692.0",
+    "axios": "^1.5.0",
+    "bcryptjs": "^2.4.3",
+    "compression": "^1.7.4",
+    "cors": "^2.8.5",
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "express-rate-limit": "^6.7.0",
+    "express-validator": "^7.0.1",
+    "form-data": "^4.0.4",
+    "helmet": "^7.0.0",
+    "jsonwebtoken": "^9.0.0",
+    "multer": "^1.4.5-lts.1",
+    "mysql2": "^3.6.0",
+    "node-cron": "^3.0.2",
+    "prom-client": "^14.2.0",
+    "sharp": "^0.32.6",
+    "socket.io": "^4.7.2",
+    "socket.io-client": "^4.8.1",
+    "sqlite3": "^5.1.7",
+    "winston": "^3.10.0"
+  },
+  "devDependencies": {
+    "jest": "^29.6.4",
+    "nodemon": "^3.0.1"
+  },
+  "keywords": [
+    "cdn",
+    "management",
+    "monitoring",
+    "real-time",
+    "metrics"
+  ],
+  "author": "CDN Management Team",
+  "license": "MIT",
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
