@@ -9,7 +9,7 @@ import {
   Alert,
   useTheme,
   Chip,
-  Divider,
+
   List,
   ListItem,
   ListItemText,
@@ -17,7 +17,7 @@ import {
 } from '@mui/material';
 import {
   Speed as SpeedIcon,
-  Memory as MemoryIcon,
+
   Storage as StorageIcon,
   NetworkCheck as NetworkIcon,
   TrendingUp as TrendingUpIcon,
@@ -146,12 +146,12 @@ const Dashboard: React.FC = () => {
       
       console.log('📊 API Response:', response.data);
       
-      if (response.data.success) {
-        const data = response.data.data;
+      if (response.data && response.data.success) {
+        const data = response.data.data || {};
         console.log('📈 Raw data:', data);
         
         // Update system status based on health score
-        const healthScore = data.healthScore;
+        const healthScore = data.healthScore || 85;
         let status: 'online' | 'offline' | 'maintenance' | 'warning' = 'online';
         let message = 'All systems operational';
         

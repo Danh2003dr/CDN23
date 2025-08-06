@@ -3,7 +3,7 @@ import { MapContainer, TileLayer, Marker, Popup, Circle } from 'react-leaflet';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import { Box, Typography, Chip, Paper } from '@mui/material';
-import { CheckCircle, Warning, Build } from '@mui/icons-material';
+import { } from '@mui/icons-material';
 
 // Fix for default markers
 delete (L.Icon.Default.prototype as any)._getIconUrl;

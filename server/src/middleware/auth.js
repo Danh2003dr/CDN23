@@ -27,7 +27,19 @@ const auth = async (req, res, next) => {
         let userPermissions = {};
         try {
             if (user.permissions) {
-                userPermissions = JSON.parse(user.permissions);
+                // Kiểm tra xem permissions đã là object chưa
+                if (typeof user.permissions === 'string') {
+                    try {
+                        userPermissions = JSON.parse(user.permissions);
+                    } catch (parseError) {
+                        console.error('Error parsing user permissions JSON:', parseError);
+                        userPermissions = getUserPermissions(user.role_name);
+                    }
+                } else if (typeof user.permissions === 'object') {
+                    userPermissions = user.permissions;
+                } else {
+                    userPermissions = getUserPermissions(user.role_name);
+                }
             } else {
                 // Fallback: lấy permissions từ role name
                 userPermissions = getUserPermissions(user.role_name);

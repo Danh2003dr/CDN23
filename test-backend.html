@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Backend Connection</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .status { padding: 10px; margin: 10px 0; border-radius: 5px; }
+        .success { background: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
+        .error { background: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
+        .loading { background: #fff3cd; color: #856404; border: 1px solid #ffeaa7; }
+        button { padding: 10px 20px; margin: 5px; cursor: pointer; }
+        pre { background: #f8f9fa; padding: 10px; border-radius: 5px; overflow-x: auto; }
+    </style>
+</head>
+<body>
+    <h1>🔧 CDN Management System - Backend Test</h1>
+    
+    <div id="status" class="status loading">
+        🔄 Đang kiểm tra kết nối backend...
+    </div>
+    
+    <div>
+        <button onclick="testHealth()">Test Health Check</button>
+        <button onclick="testNodes()">Test Nodes API</button>
+        <button onclick="testMetrics()">Test Metrics API</button>
+        <button onclick="testActivityLogs()">Test Activity Logs API</button>
+    </div>
+    
+    <div id="results">
+        <h2>📊 Kết quả test:</h2>
+        <div id="output"></div>
+    </div>
+
+    <script>
+        const API_BASE = 'http://localhost:5000';
+        
+        async function makeRequest(endpoint, description) {
+            const output = document.getElementById('output');
+            const timestamp = new Date().toLocaleTimeString();
+            
+            try {
+                output.innerHTML += `<p><strong>[${timestamp}] Testing: ${description}</strong></p>`;
+                
+                const response = await fetch(`${API_BASE}${endpoint}`);
+                const data = await response.json();
+                
+                output.innerHTML += `<pre>Status: ${response.status}\nResponse: ${JSON.stringify(data, null, 2)}</pre>`;
+                
+                if (response.ok) {
+                    output.innerHTML += `<div class="status success">✅ ${description} - SUCCESS</div>`;
+                } else {
+                    output.innerHTML += `<div class="status error">❌ ${description} - FAILED</div>`;
+                }
+            } catch (error) {
+                output.innerHTML += `<pre>Error: ${error.message}</pre>`;
+                output.innerHTML += `<div class="status error">❌ ${description} - CONNECTION ERROR</div>`;
+            }
+            
+            output.innerHTML += '<hr>';
+            output.scrollTop = output.scrollHeight;
+        }
+        
+        async function testHealth() {
+            await makeRequest('/health', 'Health Check');
+        }
+        
+        async function testNodes() {
+            await makeRequest('/api/nodes', 'Nodes API');
+        }
+        
+        async function testMetrics() {
+            await makeRequest('/api/metrics/overview', 'Metrics Overview API');
+        }
+        
+        async function testActivityLogs() {
+            await makeRequest('/api/activity-logs', 'Activity Logs API');
+        }
+        
+        // Auto test health check on load
+        window.onload = async function() {
+            const statusDiv = document.getElementById('status');
+            
+            try {
+                const response = await fetch(`${API_BASE}/health`);
+                const data = await response.json();
+                
+                if (response.ok) {
+                    statusDiv.className = 'status success';
+                    statusDiv.innerHTML = '✅ Backend đang chạy tốt! Server version: ' + (data.version || '1.0.0');
+                } else {
+                    statusDiv.className = 'status error';
+                    statusDiv.innerHTML = '❌ Backend có lỗi: ' + (data.message || 'Unknown error');
+                }
+            } catch (error) {
+                statusDiv.className = 'status error';
+                statusDiv.innerHTML = '❌ Không thể kết nối đến backend. Vui lòng kiểm tra server có đang chạy trên port 5000?';
+            }
+        };
+    </script>
+</body>
+</html>

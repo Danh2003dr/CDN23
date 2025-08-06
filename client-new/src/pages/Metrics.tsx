@@ -83,18 +83,18 @@ const Metrics: React.FC = () => {
         axios.get('/api/metrics/summary')
       ]);
 
-      if (overviewRes.data.success) {
-        const data = overviewRes.data.data;
+      if (overviewRes.data && overviewRes.data.success) {
+        const data = overviewRes.data.data || {};
         setSystemMetrics({
-          total_nodes: Number(data.total_nodes),
-          avg_cpu_usage: Number(data.avg_cpu_usage),
-          avg_memory_usage: Number(data.avg_memory_usage),
-          avg_disk_usage: Number(data.avg_disk_usage),
-          avg_response_time: Number(data.avg_response_time),
-          avg_error_rate: Number(data.avg_error_rate),
-          avg_cache_hit_rate: Number(data.avg_cache_hit_rate),
-          total_network_in: Number(data.total_network_in),
-          total_network_out: Number(data.total_network_out)
+          total_nodes: Number(data.total_nodes || 0),
+          avg_cpu_usage: Number(data.avg_cpu_usage || 0),
+          avg_memory_usage: Number(data.avg_memory_usage || 0),
+          avg_disk_usage: Number(data.avg_disk_usage || 0),
+          avg_response_time: Number(data.avg_response_time || 0),
+          avg_error_rate: Number(data.avg_error_rate || 0),
+          avg_cache_hit_rate: Number(data.avg_cache_hit_rate || 0),
+          total_network_in: Number(data.total_network_in || 0),
+          total_network_out: Number(data.total_network_out || 0)
         });
       }
 

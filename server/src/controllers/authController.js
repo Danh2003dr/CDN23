@@ -2,6 +2,7 @@ const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 const User = require('../models/User');
 const { validationResult } = require('express-validator');
+const { getAuthMessage, getValidationMessage } = require('../config/languages');
 
 class AuthController {
     static async login(req, res) {
@@ -22,7 +23,7 @@ class AuthController {
             if (!user) {
                 return res.status(401).json({
                     success: false,
-                    message: 'Invalid email or password'
+                    message: getAuthMessage('vi', 'invalidCredentials')
                 });
             }
             
@@ -31,7 +32,7 @@ class AuthController {
             if (!isValidPassword) {
                 return res.status(401).json({
                     success: false,
-                    message: 'Invalid email or password'
+                    message: getAuthMessage('vi', 'invalidCredentials')
                 });
             }
             
@@ -39,7 +40,7 @@ class AuthController {
             if (!user.is_active) {
                 return res.status(401).json({
                     success: false,
-                    message: 'Account is deactivated'
+                    message: getAuthMessage('vi', 'userInactive')
                 });
             }
             
@@ -62,7 +63,7 @@ class AuthController {
             
             res.json({
                 success: true,
-                message: 'Login successful',
+                message: getAuthMessage('vi', 'loginSuccess'),
                 data: {
                     user: userResponse,
                     token
@@ -96,7 +97,7 @@ class AuthController {
             if (existingUser) {
                 return res.status(400).json({
                     success: false,
-                    message: 'Email already exists'
+                    message: getAuthMessage('vi', 'emailAlreadyExists')
                 });
             }
             
@@ -114,7 +115,7 @@ class AuthController {
             
             res.status(201).json({
                 success: true,
-                message: 'User registered successfully',
+                message: getAuthMessage('vi', 'registrationSuccess'),
                 data: newUser
             });
             

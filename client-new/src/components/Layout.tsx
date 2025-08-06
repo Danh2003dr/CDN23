@@ -7,7 +7,6 @@ import {
   Toolbar,
   List,
   Typography,
-  Divider,
   IconButton,
   ListItem,
   ListItemButton,
@@ -30,11 +29,9 @@ import {
   Security as SecurityIcon,
   AccountCircle,
   Logout,
-  ChevronLeft,
 } from '@mui/icons-material';
 import { useAuth } from '../contexts/AuthContext';
 import { useTranslation } from 'react-i18next';
-import LanguageSwitcher from './LanguageSwitcher';
 import LanguageSelector from './LanguageSelector';
 import NotificationBell from './NotificationBell';
 import PermissionGuard from './PermissionGuard';
@@ -93,13 +90,13 @@ const Layout: React.FC = () => {
       permission: 'analytics'
     },
     {
-      text: 'Content Management',
+      text: t('Content Management'),
       icon: <ContentIcon />,
       path: '/content',
       permission: 'content'
     },
     {
-      text: 'User Management',
+      text: t('navigation.userManagement'),
       icon: <PeopleIcon />,
       path: '/users',
       permission: 'user_management'
@@ -117,16 +114,6 @@ const Layout: React.FC = () => {
       permission: 'audit_logs'
     },
   ];
-
-  // Add User Management menu item for admin/manager roles
-  if (user && (user.role_name === 'admin' || user.role_name === 'manager')) {
-    menuItems.push({
-      text: t('navigation.userManagement'),
-      icon: <PeopleIcon />,
-      path: '/users',
-      permission: 'user_management'
-    });
-  }
 
   const drawer = (
     <Box sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>

@@ -28,16 +28,16 @@ import {
   DialogTitle,
   DialogContent,
   DialogActions,
-  FormControlLabel,
-  Switch,
-  SelectChangeEvent,
+
+
+
 } from '@mui/material';
 import {
   Refresh as RefreshIcon,
   Download as DownloadIcon,
   FilterList as FilterIcon,
   Analytics as AnalyticsIcon,
-  Timeline as TimelineIcon,
+
 } from '@mui/icons-material';
 import {
   LineChart,
@@ -116,7 +116,7 @@ interface AccessLogsAnalytics {
 const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#8884D8'];
 
 const AccessLogs: React.FC = () => {
-  const { user } = useAuth();
+  const { } = useAuth();
   const [logs, setLogs] = useState<AccessLog[]>([]);
   const [summary, setSummary] = useState<AccessLogsSummary | null>(null);
   const [analytics, setAnalytics] = useState<AccessLogsAnalytics | null>(null);
@@ -155,9 +155,9 @@ const AccessLogs: React.FC = () => {
       });
 
       const response = await axios.get(`/api/access-logs?${params}`);
-      if (response.data.success) {
-        setLogs(response.data.data.logs || []);
-        setTotal(response.data.data.pagination.total);
+      if (response.data && response.data.success) {
+        setLogs(response.data.data?.logs || []);
+        setTotal(response.data.data?.pagination?.total || 0);
       } else {
         setError('Không thể tải dữ liệu access logs');
       }

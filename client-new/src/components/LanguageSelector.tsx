@@ -17,7 +17,7 @@ import { useTranslation } from 'react-i18next';
 import { useLanguage } from '../contexts/LanguageContext';
 
 const LanguageSelector: React.FC = () => {
-  const { t } = useTranslation();
+  const { } = useTranslation();
   const theme = useTheme();
   const { currentLanguage, changeLanguage, availableLanguages } = useLanguage();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);

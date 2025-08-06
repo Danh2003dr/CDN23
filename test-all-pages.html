@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test All Pages - CDN Management</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .status { padding: 10px; margin: 10px 0; border-radius: 5px; }
+        .success { background: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
+        .error { background: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
+        .warning { background: #fff3cd; color: #856404; border: 1px solid #ffeaa7; }
+        button { padding: 10px 15px; margin: 5px; cursor: pointer; border: none; border-radius: 5px; background: #007bff; color: white; }
+        button:hover { background: #0056b3; }
+        .page-link { display: inline-block; margin: 5px; padding: 10px 15px; background: #28a745; color: white; text-decoration: none; border-radius: 5px; }
+        .page-link:hover { background: #1e7e34; }
+        pre { background: #f8f9fa; padding: 10px; border-radius: 5px; overflow-x: auto; max-height: 200px; }
+        .test-results { margin-top: 20px; }
+    </style>
+</head>
+<body>
+    <h1>🧪 CDN Management System - Test All Pages</h1>
+    
+    <div class="status warning">
+        <strong>📋 Hướng dẫn test:</strong><br>
+        1. Đảm bảo backend đang chạy trên port 5000<br>
+        2. Đảm bảo frontend đang chạy trên port 3000<br>
+        3. Click vào các link dưới đây để test từng trang<br>
+        4. Kiểm tra console browser (F12) để xem có lỗi runtime không
+    </div>
+    
+    <h2>🔗 Quick Links to Test Pages</h2>
+    <div>
+        <a href="http://localhost:3000/" class="page-link" target="_blank">🏠 Dashboard</a>
+        <a href="http://localhost:3000/nodes" class="page-link" target="_blank">🖥️ Nodes</a>
+        <a href="http://localhost:3000/metrics" class="page-link" target="_blank">📊 Metrics</a>
+        <a href="http://localhost:3000/analytics" class="page-link" target="_blank">📈 Analytics</a>
+        <a href="http://localhost:3000/users" class="page-link" target="_blank">👥 Users</a>
+        <a href="http://localhost:3000/content" class="page-link" target="_blank">📁 Content</a>
+        <a href="http://localhost:3000/permissions" class="page-link" target="_blank">🔐 Permissions</a>
+        <a href="http://localhost:3000/activity-logs" class="page-link" target="_blank">📝 Activity Logs</a>
+        <a href="http://localhost:3000/access-logs" class="page-link" target="_blank">📋 Access Logs</a>
+    </div>
+    
+    <h2>🔧 Backend API Tests</h2>
+    <div>
+        <button onclick="testAllAPIs()">Test All APIs</button>
+        <button onclick="clearResults()">Clear Results</button>
+    </div>
+    
+    <div id="results" class="test-results">
+        <h3>📊 Test Results:</h3>
+        <div id="output"></div>
+    </div>
+
+    <script>
+        const API_BASE = 'http://localhost:5000';
+        
+        const API_ENDPOINTS = [
+            { name: 'Health Check', url: '/health' },
+            { name: 'Nodes API', url: '/api/nodes' },
+            { name: 'Metrics Overview', url: '/api/metrics/overview' },
+            { name: 'Metrics Dashboard', url: '/api/metrics/dashboard' },
+            { name: 'Activity Logs', url: '/api/activity-logs' },
+            { name: 'Activity Logs Summary', url: '/api/activity-logs/summary' },
+            { name: 'Access Logs', url: '/api/access-logs' },
+            { name: 'Analytics', url: '/api/analytics' }
+        ];
+        
+        async function makeRequest(endpoint, description) {
+            const output = document.getElementById('output');
+            const timestamp = new Date().toLocaleTimeString();
+            
+            try {
+                output.innerHTML += `<p><strong>[${timestamp}] Testing: ${description}</strong></p>`;
+                
+                const response = await fetch(`${API_BASE}${endpoint}`);
+                let data;
+                
+                try {
+                    data = await response.json();
+                } catch (e) {
+                    data = { error: 'Invalid JSON response' };
+                }
+                
+                output.innerHTML += `<pre>Status: ${response.status}\nResponse: ${JSON.stringify(data, null, 2)}</pre>`;
+                
+                if (response.ok) {
+                    output.innerHTML += `<div class="status success">✅ ${description} - SUCCESS</div>`;
+                } else {
+                    output.innerHTML += `<div class="status error">❌ ${description} - FAILED (${response.status})</div>`;
+                }
+            } catch (error) {
+                output.innerHTML += `<pre>Error: ${error.message}</pre>`;
+                output.innerHTML += `<div class="status error">❌ ${description} - CONNECTION ERROR</div>`;
+            }
+            
+            output.innerHTML += '<hr>';
+            output.scrollTop = output.scrollHeight;
+        }
+        
+        async function testAllAPIs() {
+            const output = document.getElementById('output');
+            output.innerHTML = '<p><strong>🚀 Starting comprehensive API tests...</strong></p>';
+            
+            for (const api of API_ENDPOINTS) {
+                await makeRequest(api.url, api.name);
+                // Small delay between requests
+                await new Promise(resolve => setTimeout(resolve, 500));
+            }
+            
+            output.innerHTML += '<div class="status success"><strong>🎉 All API tests completed!</strong></div>';
+        }
+        
+        function clearResults() {
+            document.getElementById('output').innerHTML = '';
+        }
+        
+        // Auto check backend status on load
+        window.onload = async function() {
+            try {
+                const response = await fetch(`${API_BASE}/health`);
+                const data = await response.json();
+                
+                if (response.ok) {
+                    document.getElementById('output').innerHTML = '<div class="status success">✅ Backend is running! Ready to test pages.</div>';
+                } else {
+                    document.getElementById('output').innerHTML = '<div class="status error">❌ Backend has issues. Check server logs.</div>';
+                }
+            } catch (error) {
+                document.getElementById('output').innerHTML = '<div class="status error">❌ Cannot connect to backend. Make sure server is running on port 5000.</div>';
+            }
+        };
+    </script>
+</body>
+</html>

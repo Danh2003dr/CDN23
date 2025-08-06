@@ -38,8 +38,8 @@ interface Notification {
 const NotificationBell: React.FC = () => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [notifications, setNotifications] = useState<Notification[]>([]);
-  const [loading, setLoading] = useState(false);
-  const [socket, setSocket] = useState<Socket | null>(null);
+  const [, setLoading] = useState(false);
+  const [, setSocket] = useState<Socket | null>(null);
   const { t } = useTranslation();
   const theme = useTheme();
 

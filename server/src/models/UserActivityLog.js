@@ -151,14 +151,15 @@ class UserActivityLog {
             SELECT 
                 u.username,
                 u.email,
-                u.role_name,
+                r.name as role_name,
                 COUNT(*) as activity_count,
                 COUNT(CASE WHEN ual.success = 1 THEN 1 END) as success_count,
                 COUNT(CASE WHEN ual.success = 0 THEN 1 END) as error_count
             FROM user_activity_logs ual
             LEFT JOIN users u ON ual.user_id = u.id
+            LEFT JOIN roles r ON u.role_id = r.id
             WHERE ual.created_at >= DATE_SUB(NOW(), INTERVAL ? DAY)
-            GROUP BY ual.user_id, u.username, u.email, u.role_name
+            GROUP BY ual.user_id, u.username, u.email, r.name
             ORDER BY activity_count DESC
             LIMIT ?
         `;
@@ -178,7 +179,7 @@ class UserActivityLog {
                 ual.id,
                 u.username,
                 u.email,
-                u.role_name,
+                r.name as role_name,
                 ual.action,
                 ual.resource_type,
                 ual.resource_id,
@@ -188,6 +189,7 @@ class UserActivityLog {
                 ual.created_at
             FROM user_activity_logs ual
             LEFT JOIN users u ON ual.user_id = u.id
+            LEFT JOIN roles r ON u.role_id = r.id
             ORDER BY ual.created_at DESC
             LIMIT ?
         `;

@@ -36,7 +36,16 @@ class User {
         const [result] = await db.execute(query, [email]);
         if (result[0]) {
             // Parse permissions JSON string to object
-            result[0].permissions = JSON.parse(result[0].permissions);
+            try {
+                if (result[0].permissions) {
+                    result[0].permissions = JSON.parse(result[0].permissions);
+                } else {
+                    result[0].permissions = {};
+                }
+            } catch (error) {
+                console.error('Error parsing permissions for user:', result[0].email, error);
+                result[0].permissions = {};
+            }
         }
         return result[0];
     }
@@ -51,7 +60,16 @@ class User {
         const [result] = await db.execute(query, [username]);
         if (result[0]) {
             // Parse permissions JSON string to object
-            result[0].permissions = JSON.parse(result[0].permissions);
+            try {
+                if (result[0].permissions) {
+                    result[0].permissions = JSON.parse(result[0].permissions);
+                } else {
+                    result[0].permissions = {};
+                }
+            } catch (error) {
+                console.error('Error parsing permissions for user:', result[0].username, error);
+                result[0].permissions = {};
+            }
         }
         return result[0];
     }
@@ -66,7 +84,16 @@ class User {
         const [result] = await db.execute(query, [id]);
         if (result[0]) {
             // Parse permissions JSON string to object
-            result[0].permissions = JSON.parse(result[0].permissions);
+            try {
+                if (result[0].permissions) {
+                    result[0].permissions = JSON.parse(result[0].permissions);
+                } else {
+                    result[0].permissions = {};
+                }
+            } catch (error) {
+                console.error('Error parsing permissions for user ID:', result[0].id, error);
+                result[0].permissions = {};
+            }
         }
         return result[0];
     }

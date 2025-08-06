@@ -22,7 +22,7 @@ import {
 import {
   Refresh as RefreshIcon,
   Download as DownloadIcon,
-  FilterList as FilterIcon,
+
 } from '@mui/icons-material';
 import axios from 'axios';
 import { useAuth } from '../contexts/AuthContext';
@@ -48,7 +48,7 @@ interface ActivityStats {
 }
 
 const ActivityLogs: React.FC = () => {
-  const { user } = useAuth();
+  const { } = useAuth();
   const [logs, setLogs] = useState<ActivityLog[]>([]);
   const [stats, setStats] = useState<ActivityStats | null>(null);
   const [loading, setLoading] = useState(true);
@@ -65,15 +65,15 @@ const ActivityLogs: React.FC = () => {
     try {
       setLoading(true);
       const response = await axios.get('/api/activity-logs');
-      if (response.data.success) {
-        setLogs(response.data.data.logs || []);
+      if (response.data && response.data.success) {
+        setLogs(response.data.data?.logs || []);
       } else {
         setError('Không thể tải dữ liệu activity logs');
         setLogs([]);
       }
     } catch (err: any) {
       console.error('Error fetching activity logs:', err);
-      setError('Không thể tải dữ liệu activity logs');
+      setError('Không thể kết nối đến server. Vui lòng kiểm tra backend đang chạy.');
       setLogs([]);
     } finally {
       setLoading(false);
@@ -83,8 +83,20 @@ const ActivityLogs: React.FC = () => {
   const fetchActivityStats = async () => {
     try {
       const response = await axios.get('/api/activity-logs/summary');
-      if (response.data.success) {
-        setStats(response.data.data);
+      if (response.data && response.data.success) {
+        setStats(response.data.data || {
+          total_activities: 0,
+          activities_today: 0,
+          top_actions: [],
+          top_users: []
+        });
+      } else {
+        setStats({
+          total_activities: 0,
+          activities_today: 0,
+          top_actions: [],
+          top_users: []
+        });
       }
     } catch (err: any) {
       console.error('Error fetching activity stats:', err);
@@ -180,7 +192,7 @@ const ActivityLogs: React.FC = () => {
       )}
 
       {/* Stats Cards */}
-      {stats && (
+      {stats && typeof stats === 'object' && (
         <Grid container spacing={3} mb={3}>
           <Grid item xs={12} sm={6} md={3}>
             <Card>
@@ -189,7 +201,7 @@ const ActivityLogs: React.FC = () => {
                   Total Activities
                 </Typography>
                 <Typography variant="h4">
-                  {stats.total_activities}
+                  {stats?.total_activities || 0}
                 </Typography>
               </CardContent>
             </Card>
@@ -201,7 +213,7 @@ const ActivityLogs: React.FC = () => {
                   Today's Activities
                 </Typography>
                 <Typography variant="h4">
-                  {stats.activities_today}
+                  {stats?.activities_today || 0}
                 </Typography>
               </CardContent>
             </Card>
@@ -213,10 +225,10 @@ const ActivityLogs: React.FC = () => {
                   Top Action
                 </Typography>
                 <Typography variant="h6">
-                  {stats.top_actions[0]?.action || 'N/A'}
+                  {stats?.top_actions?.[0]?.action || 'N/A'}
                 </Typography>
                 <Typography variant="body2" color="textSecondary">
-                  {stats.top_actions[0]?.count || 0} times
+                  {stats?.top_actions?.[0]?.count || 0} times
                 </Typography>
               </CardContent>
             </Card>
@@ -228,10 +240,10 @@ const ActivityLogs: React.FC = () => {
                   Most Active User
                 </Typography>
                 <Typography variant="h6">
-                  {stats.top_users[0]?.username || 'N/A'}
+                  {stats?.top_users?.[0]?.username || 'N/A'}
                 </Typography>
                 <Typography variant="body2" color="textSecondary">
-                  {stats.top_users[0]?.count || 0} activities
+                  {stats?.top_users?.[0]?.count || 0} activities
                 </Typography>
               </CardContent>
             </Card>
