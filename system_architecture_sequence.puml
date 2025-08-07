@@ -1,0 +1,84 @@
+@startuml CDN_System_Architecture
+!theme plain
+title CDN Management System - System Architecture Overview
+
+box "Frontend Layer" #lightblue
+    participant "Web Browser" as Browser
+    participant "React App" as React
+end box
+
+box "Backend Layer" #lightgreen  
+    participant "Express Server" as Express
+    participant "WebSocket Server" as WS
+    participant "Authentication" as Auth
+    participant "API Routes" as API
+end box
+
+box "Data Layer" #lightyellow
+    participant "MySQL Database" as MySQL
+    participant "File System" as FileSystem
+end box
+
+box "External Systems" #lightcoral
+    participant "CDN Nodes" as CDNNodes
+    participant "Monitoring Services" as Monitor
+end box
+
+== System Initialization ==
+React -> Express: Initialize connection
+Express -> MySQL: Connect to database
+Express -> WS: Setup WebSocket server
+Express -> Monitor: Start monitoring services
+Monitor -> CDNNodes: Begin health checks
+
+== User Session Flow ==
+Browser -> React: User access
+React -> Express: Authentication request
+Express -> Auth: Validate credentials
+Auth -> MySQL: Query user data
+MySQL -> Auth: Return user info
+Auth -> Express: User authenticated
+Express -> React: Send user session
+React -> Browser: Display dashboard
+
+== Real-time Monitoring ==
+Monitor -> CDNNodes: Collect metrics
+CDNNodes -> Monitor: Performance data
+Monitor -> MySQL: Store metrics
+Monitor -> WS: Broadcast updates
+WS -> React: Real-time data
+React -> Browser: Update UI
+
+== API Operations ==
+Browser -> React: User action
+React -> Express: API request
+Express -> Auth: Verify permissions
+Auth -> API: Process request
+API -> MySQL: Database operations
+MySQL -> API: Return data
+API -> Express: Response data
+Express -> React: JSON response
+React -> Browser: Update interface
+
+== Content Management ==
+Browser -> React: Upload content
+React -> Express: POST /api/content/upload
+Express -> FileSystem: Save files
+FileSystem -> Express: File paths
+Express -> MySQL: Store metadata
+Express -> CDNNodes: Distribute content
+CDNNodes -> Express: Deployment status
+Express -> React: Success response
+React -> Browser: Show results
+
+== Alert System ==
+Monitor -> CDNNodes: Health check
+CDNNodes -> Monitor: Status data
+alt Critical issue detected
+    Monitor -> MySQL: Create alert
+    Monitor -> WS: Broadcast alert
+    WS -> React: Real-time alert
+    React -> Browser: Show notification
+end
+
+@enduml
