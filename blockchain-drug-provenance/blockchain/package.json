@@ -1,0 +1,37 @@
+{
+  "name": "drug-provenance-blockchain",
+  "version": "1.0.0",
+  "description": "Smart contracts for drug provenance management on blockchain",
+  "main": "truffle-config.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "compile": "truffle compile",
+    "migrate": "truffle migrate",
+    "test": "truffle test",
+    "console": "truffle console",
+    "ganache": "ganache-cli --deterministic --accounts 10 --host 0.0.0.0",
+    "dev": "npm run ganache"
+  },
+  "dependencies": {
+    "@openzeppelin/contracts": "^4.9.3",
+    "@truffle/hdwallet-provider": "^2.1.15",
+    "web3": "^4.1.1"
+  },
+  "devDependencies": {
+    "@truffle/contract": "^4.6.25",
+    "ganache-cli": "^6.12.2",
+    "truffle": "^5.11.5"
+  },
+  "keywords": [
+    "blockchain",
+    "ethereum", 
+    "solidity",
+    "smart-contracts",
+    "drug-provenance",
+    "supply-chain"
+  ],
+  "author": "Drug Provenance Team",
+  "license": "MIT"
+}
