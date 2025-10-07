@@ -1,0 +1,23 @@
+# Sprint Retrospective – Mẫu thực hiện
+
+Thông tin Sprint
+- Sprint #: ...
+- Thời gian: ... → ...
+- Điều phối: Scrum Master: ...
+
+## Đánh giá theo 3 câu hỏi
+- Điều gì đã làm tốt trong sprint?  
+  - ...
+- Điều gì cần cải thiện?  
+  - ...
+- Kế hoạch cải tiến cho sprint tới (Action Items)?  
+  - AI-1: Mô tả, Người chịu trách nhiệm, Hạn chót
+  - AI-2: ...
+
+## Căn cứ
+- Dựa trên dữ liệu: burndown, throughput, WIP, lỗi production, lead time...
+
+## Theo dõi hành động cải tiến (carry-over)
+| ID | Mô tả hành động | Owner | Due date | Trạng thái |
+|---:|------------------|-------|---------|------------|
+| AI-1 | ... | ... | ... | Open/In Progress/Done |
