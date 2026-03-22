@@ -1,296 +1,134 @@
-# 🚀 CDN Management System
+# CDN Management System
 
-[![Node.js](https://img.shields.io/badge/Node.js-16+-green.svg)](https://nodejs.org/)
-[![React](https://img.shields.io/badge/React-18+-blue.svg)](https://reactjs.org/)
-[![MySQL](https://img.shields.io/badge/MySQL-8.0+-orange.svg)](https://www.mysql.com/)
+[![Node.js](https://img.shields.io/badge/Node.js-%3E%3D18-green.svg)](https://nodejs.org/)
+[![React](https://img.shields.io/badge/React-18-blue.svg)](https://reactjs.org/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-4.9-blue.svg)](https://www.typescriptlang.org/)
+[![MySQL](https://img.shields.io/badge/MySQL-8.0-orange.svg)](https://www.mysql.com/)
 [![License](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
-> **Hệ thống quản lý Content Delivery Network (CDN) toàn diện** - Giám sát, quản lý và tối ưu hóa việc phân phối nội dung trên mạng lưới server phân tán.
+Ứng dụng web quản lý và giám sát mạng phân phối nội dung (CDN): dashboard, node, nội dung, cảnh báo, phân tích, nhật ký truy cập và phân quyền theo vai trò. Backend REST + WebSocket; frontend React (TypeScript) và MUI.
 
-## 📋 Tổng quan
-
-CDN Management System là một giải pháp hoàn chỉnh cho việc quản lý Content Delivery Network, cung cấp:
-
-- 🎯 **Dashboard tổng quan** với metrics real-time
-- 🏗️ **Quản lý CDN nodes** phân tán
-- 📊 **Analytics & Monitoring** chi tiết
-- 🚨 **Alert system** thông minh
-- 🔐 **Security & Access Control** mạnh mẽ
-- 📱 **Modern UI** với Material-UI
-
-## ✨ Tính năng chính
-
-### 🎛️ Dashboard & Monitoring
-- **System Overview**: Tổng quan hệ thống với metrics chính
-- **Real-time Metrics**: CPU, RAM, Disk, Network usage
-- **Performance Trends**: Biểu đồ xu hướng hiệu suất
-- **Geographic Distribution**: Phân bố theo địa lý
-- **Health Score**: Điểm số sức khỏe hệ thống
-
-### 🏗️ Node Management
-- **Node Status**: Online/Offline/Maintenance
-- **Performance Monitoring**: Chi tiết hiệu suất từng node
-- **Geographic Distribution**: Phân bố theo khu vực
-- **Node Comparison**: So sánh hiệu suất giữa các node
-- **Maintenance Scheduling**: Lập lịch bảo trì
-
-### 📁 Content Management
-- **Content Upload**: Upload và tối ưu hóa nội dung
-- **Content Distribution**: Phân phối nội dung đến các node
-- **Content Optimization**: Tối ưu hóa hình ảnh, video, code
-- **Cache Management**: Quản lý cache và invalidation
-- **Content Analytics**: Thống kê sử dụng nội dung
-
-### 🚨 Alert System
-- **Real-time Alerts**: Cảnh báo thời gian thực
-- **Severity Levels**: Phân loại mức độ nghiêm trọng
-- **Alert Management**: Quản lý và giải quyết cảnh báo
-- **Notification System**: Thông báo qua email/SMS
-- **Alert History**: Lịch sử cảnh báo
-
-### 🔐 Security & Access Control
-- **Role-based Access Control**: Phân quyền theo vai trò
-- **Permission Management**: Quản lý quyền chi tiết
-- **API Key Authentication**: Xác thực cho external access
-- **Audit Logs**: Ghi log mọi hoạt động
-- **Session Management**: Quản lý phiên đăng nhập
-
-## 🚀 Quick Start
-
-### Prerequisites
-- **Node.js** 16+ 
-- **MySQL** 8.0+
-- **npm** hoặc **yarn**
-
-### Installation
-
-1. **Clone repository**
-```bash
-git clone https://github.com/your-username/cdn-management.git
-cd cdn-management
-```
-
-2. **Setup Backend**
-```bash
-cd server
-npm install
-```
-
-3. **Setup Database**
-```bash
-# Tạo database MySQL
-mysql -u root -p
-CREATE DATABASE cdn_management;
-USE cdn_management;
-
-# Chạy schema
-node database/setup.js
-
-# Seed dữ liệu mẫu
-node database/seed.js
-```
-
-4. **Setup Frontend**
-```bash
-cd ../client-new
-npm install
-```
-
-5. **Start Development Servers**
-```bash
-# Terminal 1 - Backend
-cd server
-npm start
-
-# Terminal 2 - Frontend  
-cd client-new
-npm start
-```
-
-6. **Access Application**
-- **Frontend**: http://localhost:3000
-- **Backend API**: http://localhost:5000
-- **Default Admin**: admin@cdn.com / admin123
-
-## 🏗️ Kiến trúc hệ thống
-
-```
-📁 CDN-Management/
-├── 📁 server/                 # Backend (Node.js + Express)
-│   ├── 📁 src/
-│   │   ├── 📁 config/        # Database, permissions config
-│   │   ├── 📁 middleware/    # Auth, validation middleware
-│   │   ├── 📁 models/        # Database models
-│   │   ├── 📁 routes/        # API endpoints
-│   │   ├── 📁 services/      # Business logic
-│   │   └── index.js          # Server entry point
-│   ├── 📁 database/          # Schema & seed data
-│   └── package.json
-├── 📁 client-new/            # Frontend (React + Material-UI)
-│   ├── 📁 src/
-│   │   ├── 📁 components/    # Reusable components
-│   │   ├── 📁 contexts/      # React contexts
-│   │   ├── 📁 pages/         # Main pages
-│   │   ├── 📁 services/      # API calls
-│   │   └── App.tsx           # Main app component
-│   └── package.json
-└── README.md
-```
-
-## 📊 Database Schema
-
-```sql
-📊 Database Tables:
-├── users                   # Người dùng hệ thống
-├── roles                   # Vai trò và quyền hạn
-├── cdn_nodes              # Các node CDN
-├── node_metrics           # Metrics hiệu suất
-├── content                # Nội dung được phân phối
-├── content_distribution   # Thông tin phân phối
-├── alerts                 # Cảnh báo hệ thống
-├── access_logs            # Log truy cập
-├── node_maintenance       # Lịch bảo trì
-└── api_keys              # API keys cho external access
-```
-
-## 🔧 Công nghệ sử dụng
-
-### Backend
-- **Node.js** - Runtime environment
-- **Express.js** - Web framework
-- **MySQL** - Database management
-- **Socket.IO** - Real-time communication
-- **JWT** - Authentication tokens
-- **bcryptjs** - Password hashing
-- **multer** - File upload handling
-- **sharp** - Image optimization
-
-### Frontend
-- **React.js** - UI framework
-- **Material-UI** - Component library
-- **TypeScript** - Type safety
-- **axios** - HTTP client
-- **react-router-dom** - Routing
-- **recharts** - Data visualization
-
-## 📋 API Documentation
-
-### Authentication
-```http
-POST /api/auth/login
-POST /api/auth/logout
-GET /api/auth/profile
-```
-
-### Dashboard
-```http
-GET /api/metrics/dashboard
-GET /api/metrics/overview
-GET /api/analytics/performance-trends
-```
-
-### Node Management
-```http
-GET /api/nodes
-GET /api/nodes/:id
-GET /api/nodes/:id/performance
-```
-
-### Content Management
-```http
-GET /api/content
-POST /api/content/upload
-POST /api/content/:id/distribute
-```
-
-### Alerts
-```http
-GET /api/alerts
-GET /api/alerts/stats
-POST /api/alerts/:id/resolve
-```
-
-## 🔐 Security Features
-
-- **JWT Authentication** - Secure token-based auth
-- **Role-based Access Control** - Fine-grained permissions
-- **API Key Security** - SHA-256 hashing
-- **Input Validation** - Sanitize user inputs
-- **SQL Injection Prevention** - Parameterized queries
-- **XSS Protection** - Content Security Policy
-
-## 📈 Performance & Scalability
-
-- **Database Indexing** - Optimized queries
-- **Connection Pooling** - Efficient DB connections
-- **Image Optimization** - WebP conversion, resizing
-- **Code Minification** - CSS, JS, HTML compression
-- **Modular Architecture** - Easy to extend
-- **API-first Design** - RESTful endpoints
-
-## 🚀 Deployment
-
-### Development
-```bash
-# Backend
-cd server && npm start
-
-# Frontend
-cd client-new && npm start
-```
-
-### Production
-```bash
-# Build frontend
-cd client-new && npm run build
-
-# Start backend with PM2
-cd server && pm2 start src/index.js
-```
-
-## 📊 Sample Data
-
-### Users & Roles
-- **Admin**: Quyền quản trị toàn hệ thống
-- **Manager**: Quản lý cao cấp
-- **Operator**: Vận hành CDN
-- **Technician**: Hỗ trợ kỹ thuật
-- **Viewer**: Chỉ xem báo cáo
-
-### CDN Nodes
-- **9 Nodes** phân bố tại 4 thành phố
-- **3 Node Types**: Edge, Origin, Cache
-- **Real-time Metrics**: CPU, RAM, Disk, Network
-
-## 🤝 Contributing
-
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
-
-## 📞 Support
-
-- **Documentation**: [PROJECT_DESCRIPTION.md](PROJECT_DESCRIPTION.md)
-- **API Reference**: [API Documentation](#api-documentation)
-- **Issues**: [GitHub Issues](https://github.com/your-username/cdn-management/issues)
-- **Wiki**: [Project Wiki](https://github.com/your-username/cdn-management/wiki)
-
-## 📄 License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-## 🙏 Acknowledgments
-
-- **Material-UI** for the beautiful component library
-- **Express.js** team for the robust web framework
-- **React** team for the amazing UI library
-- **MySQL** for the reliable database system
+**Tài liệu chi tiết:** [PROJECT_DESCRIPTION.md](PROJECT_DESCRIPTION.md) · **Trạng thái & phạm vi:** [PROJECT_STATUS.md](PROJECT_STATUS.md)
 
 ---
 
-**Made with ❤️ for better content delivery**
+## Điểm nổi bật (tóm tắt cho portfolio / CV)
 
-> **CDN Management System** - Giải pháp toàn diện cho việc quản lý và tối ưu hóa Content Delivery Network #   C D N 2 3  
- 
+- Thiết kế **REST API** có **JWT**, phân quyền theo permission, **rate limiting** (toàn API + riêng nhóm auth), **Helmet**, **compression**, **CORS** có kiểm soát.
+- **WebSocket (Socket.IO)** phục vụ cập nhật thời gian thực; dịch vụ **heartbeat node** và **giám sát hiệu năng** chạy nền.
+- **MySQL**: schema chuẩn hóa (users, roles, nodes, metrics, content, phân phối, alerts, bảo trì, access logs, API keys; bổ sung bảng/view activity logs theo script).
+- **React + TypeScript**: trang Dashboard, Nodes, chi tiết node, Metrics, Analytics, Content, Alerts, Users, Permissions, Access logs, Activity logs; **i18n** (i18next); bản đồ **Leaflet**; biểu đồ **Recharts / Chart.js**; **MUI X Data Grid / Date Pickers**.
+
+---
+
+## Cấu trúc repository
+
+```
+CDN23/
+├── server/           # Backend Express (Node.js)
+│   ├── src/          # routes, middleware, services, websocket
+│   └── database/     # SQL schema, setup & seed
+├── client-new/       # Frontend CRA + React + TypeScript + MUI
+├── README.md
+├── PROJECT_DESCRIPTION.md
+└── PROJECT_STATUS.md
+```
+
+---
+
+## Yêu cầu môi trường
+
+- **Node.js** ≥ 18 (theo `server/package.json`)
+- **MySQL** 8.x
+- **npm**
+
+---
+
+## Cài đặt và chạy nhanh
+
+### 1. Cơ sở dữ liệu
+
+```bash
+cd server
+npm install
+```
+
+Tạo database `cdn_management` (hoặc tên trong `.env`), sau đó:
+
+```bash
+npm run setup
+npm run seed
+```
+
+(Có thể dùng `npm run setup-fixed` nếu bạn đang theo quy trình đã chỉnh trong repo.)
+
+### 2. Backend
+
+Tạo file `server/.env` (tham khảo biến: `DB_*`, `PORT`, `JWT_SECRET`, `CLIENT_URL`, tùy chọn `USE_REAL_DATA=true` để bật thu thập dữ liệu thật theo cấu hình node).
+
+```bash
+cd server
+npm start
+```
+
+Mặc định API: `http://localhost:5000` — kiểm tra: `GET /health`
+
+### 3. Frontend
+
+```bash
+cd client-new
+npm install
+npm start
+```
+
+Mặc định UI: `http://localhost:3000` (proxy tới backend trong `client-new/package.json`).
+
+---
+
+## API (tổng quan)
+
+Nhóm chính (tiền tố `/api`):
+
+| Nhóm | Base path | Ghi chú |
+|------|-----------|---------|
+| Auth & người dùng | `/api/auth` | Đăng nhập, profile, CRUD user dưới `/api/auth/users` |
+| Nodes | `/api/nodes` | CRUD, performance, metrics, heartbeat |
+| Metrics | `/api/metrics` | overview, dashboard, theo node, anomaly, summary |
+| Alerts | `/api/alerts` | danh sách, summary, theo node, anomalies, thresholds |
+| Content | `/api/content` | upload, distribute, optimize, cache-invalidate |
+| Analytics | `/api/analytics` | xu hướng, so sánh node, bản đồ, export |
+| Permissions | `/api/permissions` | roles, kiểm tra quyền |
+| Access logs | `/api/access-logs` | tra cứu, tổng hợp, export |
+| Activity logs | `/api/activity-logs` | audit theo user / action / resource |
+
+Chi tiết từng endpoint: xem [PROJECT_DESCRIPTION.md](PROJECT_DESCRIPTION.md).
+
+---
+
+## Dữ liệu demo và môi trường thật
+
+- Seed cung cấp **người dùng, node, cảnh báo, API keys** mẫu để demo UI và luồng API.
+- Biến `USE_REAL_DATA` điều khiển có bật **thu thập metrics thật** từ các nguồn cấu hình hay không; khi tắt, hệ thống vẫn chạy với luồng demo.
+
+---
+
+## Build production (gợi ý)
+
+```bash
+cd client-new && npm run build
+cd server && npm start
+```
+
+Triển khai thực tế nên kèm reverse proxy (ví dụ Nginx), HTTPS, biến môi trường bảo mật, và quản lý process (PM2, systemd, container).
+
+---
+
+## License
+
+MIT — xem file [LICENSE](LICENSE) nếu có trong repo.
+
+---
+
+## Gợi ý câu mô tả ngắn trên CV (tiếng Việt)
+
+- *Xây dựng hệ thống quản lý CDN full-stack: Express + MySQL + JWT/RBAC, WebSocket cập nhật real-time, React TypeScript + MUI, dashboard analytics và quản lý nội dung có tối ưu ảnh (Sharp).*
