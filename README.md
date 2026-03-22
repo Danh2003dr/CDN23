@@ -12,7 +12,7 @@
 
 ---
 
-## Điểm nổi bật (tóm tắt cho portfolio / CV)
+## Điểm nổi bật
 
 - Thiết kế **REST API** có **JWT**, phân quyền theo permission, **rate limiting** (toàn API + riêng nhóm auth), **Helmet**, **compression**, **CORS** có kiểm soát.
 - **WebSocket (Socket.IO)** phục vụ cập nhật thời gian thực; dịch vụ **heartbeat node** và **giám sát hiệu năng** chạy nền.
