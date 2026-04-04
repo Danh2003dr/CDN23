@@ -1,0 +1,169 @@
+@startuml CDN_Management_System_Sequence
+!theme plain
+title CDN Management System - Main User Flows
+
+actor "User" as User
+participant "React Frontend" as Frontend
+participant "Express Server" as Server
+participant "Auth Middleware" as Auth
+participant "WebSocket" as WS
+participant "MySQL Database" as DB
+participant "CDN Nodes" as CDN
+participant "File System" as FS
+participant "Real Data Collector" as RDC
+
+== Authentication Flow ==
+User -> Frontend: Access application
+Frontend -> Server: GET /api/auth/profile
+Server -> Auth: Verify JWT token
+Auth -> DB: Query user data
+DB -> Auth: Return user info
+Auth -> Server: User authenticated
+Server -> Frontend: User profile data
+Frontend -> User: Show dashboard/login
+
+alt User not authenticated
+    User -> Frontend: Enter credentials
+    Frontend -> Server: POST /api/auth/login
+    Server -> DB: Verify credentials
+    DB -> Server: User data
+    Server -> Frontend: JWT token + user info
+    Frontend -> User: Redirect to dashboard
+end
+
+== Real-time Dashboard Monitoring ==
+Frontend -> WS: Connect WebSocket
+WS -> Frontend: Connection established
+
+loop Real-time updates
+    RDC -> CDN: Collect metrics
+    CDN -> RDC: Return performance data
+    RDC -> DB: Store metrics
+    RDC -> WS: Broadcast updates
+    WS -> Frontend: Real-time metrics
+    Frontend -> User: Update dashboard
+end
+
+User -> Frontend: Request dashboard data
+Frontend -> Server: GET /api/metrics/dashboard
+Server -> Auth: Verify permissions
+Auth -> DB: Query dashboard metrics
+DB -> Server: System overview data
+Server -> Frontend: Dashboard data
+Frontend -> User: Display dashboard
+
+== Node Management Flow ==
+User -> Frontend: View CDN nodes
+Frontend -> Server: GET /api/nodes
+Server -> Auth: Check permissions
+Auth -> DB: Query cdn_nodes table
+DB -> Server: Nodes list with status
+Server -> Frontend: Nodes data
+Frontend -> User: Display nodes grid
+
+User -> Frontend: View node details
+Frontend -> Server: GET /api/nodes/:id/performance
+Server -> Auth: Verify access
+Auth -> DB: Query node_metrics table
+DB -> Server: Performance data
+Server -> Frontend: Node performance
+Frontend -> User: Show performance charts
+
+User -> Frontend: Update node status
+Frontend -> Server: PUT /api/nodes/:id/status
+Server -> Auth: Check update permissions
+Auth -> DB: Update cdn_nodes status
+DB -> Server: Confirmation
+Server -> WS: Broadcast status change
+WS -> Frontend: Real-time update
+Frontend -> User: Status updated
+
+== Content Management Flow ==
+User -> Frontend: Upload content
+Frontend -> Server: POST /api/content/upload (multipart)
+Server -> Auth: Verify upload permissions
+Auth -> FS: Save file to storage
+FS -> Server: File path
+Server -> DB: Store content metadata
+DB -> Server: Content ID
+Server -> Frontend: Upload success
+Frontend -> User: Upload completed
+
+User -> Frontend: Distribute content
+Frontend -> Server: POST /api/content/:id/distribute
+Server -> Auth: Check permissions
+Auth -> DB: Query content and target nodes
+DB -> Server: Content and nodes data
+
+loop For each target node
+    Server -> CDN: Deploy content to node
+    CDN -> Server: Deployment status
+    Server -> DB: Update content_distribution
+end
+
+Server -> Frontend: Distribution status
+Frontend -> User: Show distribution results
+
+== Alert Management Flow ==
+loop Continuous monitoring
+    RDC -> CDN: Monitor node health
+    CDN -> RDC: Health metrics
+    
+    alt Critical threshold exceeded
+        RDC -> DB: Create alert record
+        RDC -> WS: Broadcast alert
+        WS -> Frontend: Real-time alert
+        Frontend -> User: Show alert notification
+    end
+end
+
+User -> Frontend: View alerts
+Frontend -> Server: GET /api/alerts
+Server -> Auth: Check permissions
+Auth -> DB: Query alerts table
+DB -> Server: Alerts list
+Server -> Frontend: Alerts data
+Frontend -> User: Display alerts
+
+User -> Frontend: Resolve alert
+Frontend -> Server: POST /api/alerts/:id/resolve
+Server -> Auth: Verify permissions
+Auth -> DB: Update alert status
+DB -> Server: Confirmation
+Server -> WS: Broadcast resolution
+WS -> Frontend: Update alert status
+Frontend -> User: Alert resolved
+
+== Analytics and Reporting ==
+User -> Frontend: View analytics
+Frontend -> Server: GET /api/analytics/performance-trends
+Server -> Auth: Check permissions
+Auth -> DB: Complex analytics query
+note right of DB: Joins multiple tables:\n- node_metrics\n- cdn_nodes\n- access_logs
+DB -> Server: Analytics data
+Server -> Frontend: Processed analytics
+Frontend -> User: Display charts and reports
+
+== User Management Flow ==
+User -> Frontend: Manage users (Admin only)
+Frontend -> Server: GET /api/permissions/users
+Server -> Auth: Check admin permissions
+Auth -> DB: Query users and roles
+DB -> Server: Users data
+Server -> Frontend: Users list
+Frontend -> User: Display user management
+
+User -> Frontend: Update user permissions
+Frontend -> Server: PUT /api/permissions/users/:id
+Server -> Auth: Verify admin access
+Auth -> DB: Update user permissions
+DB -> Server: Confirmation
+Server -> Frontend: Update success
+Frontend -> User: Permissions updated
+
+== Access Logging ==
+note over Server, DB: All API requests are logged
+Server -> DB: INSERT into access_logs
+note right of DB: Tracks:\n- User actions\n- API endpoints\n- Timestamps\n- IP addresses
+
+@enduml
